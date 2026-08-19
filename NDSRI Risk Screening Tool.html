@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)file:///C:/Users/yoges/Downloads/ndsri_risk_screening_tool.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>NDSRI Risk Screening Tool</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600&display=swap');
+
+:root{
+  --ink:#0f1011;
+  --paper:#ECEEE7;
+  --panel:#F7F8F3;
+  --line:#C4C7BB;
+  --amber:#706d47;
+  --alert:#B3261E;
+  --safe:#235C4E;
+  --hazard:#e21c1c;
+  --petrol:#0E5C5C;
+  --mono-grey:#5C5F55;
+  --cat1:#7A1620;
+  --cat2:#C1401A;
+  --cat3:#D9840F;
+  --cat4:#4C7A5F;
+  --cat5:#0e395c;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Work Sans',sans-serif;
+  padding:28px 16px 60px;
+  min-height:100vh;
+}
+
+.sheet{
+  max-width:880px;
+  margin:0 auto;
+  background:var(--panel);
+  border:1px solid var(--line);
+  box-shadow:0 1px 0 var(--line), 0 12px 30px -18px rgba(27,42,65,0.35);
+}
+
+/* Document header block */
+.doc-header{
+  border-bottom:2px solid var(--ink);
+  padding:22px 28px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.hazard-badge{
+  flex-shrink:0;
+  width:52px; height:52px;
+  border:2.5px solid var(--ink);
+  background:#FFFFFF;
+  transform:rotate(45deg);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.hazard-badge svg{
+  width:36px; height:auto;
+  transform:rotate(-45deg);
+}
+.doc-header .title-block h1{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:26px;
+  font-weight:700;
+  margin:0 0 4px;
+  letter-spacing:0.2px;
+}
+.doc-header .title-block .subtitle{
+  font-family:'Space Mono',monospace;
+  font-size:11.5px;
+  color:var(--mono-grey);
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+}
+.doc-meta{
+  font-family:'Space Mono',monospace;
+  font-size:10.5px;
+  color:var(--mono-grey);
+  text-align:right;
+  line-height:1.6;
+  white-space:nowrap;
+}
+.doc-meta span{color:var(--ink); font-weight:600;}
+
+/* Scope note */
+.scope-note{
+  padding:12px 28px;
+  background:#E3E6DA;
+  border-bottom:1px solid var(--line);
+  font-size:12.5px;
+  color:var(--mono-grey);
+  line-height:1.55;
+}
+.scope-note b{color:var(--ink);}
+
+/* Tabs */
+.tabs{
+  display:flex;
+  border-bottom:1px solid var(--line);
+  background:var(--paper);
+}
+.tab{
+  flex:1;
+  padding:14px 18px;
+  font-family:'Space Mono',monospace;
+  font-size:12.5px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:var(--mono-grey);
+  cursor:pointer;
+  border-right:1px solid var(--line);
+  border-bottom:3px solid transparent;
+  transition:background 0.15s, color 0.15s;
+  user-select:none;
+}
+.tab:last-child{border-right:none;}
+.tab .step-num{
+  display:inline-block;
+  width:18px; height:18px;
+  border-radius:50%;
+  background:var(--line);
+  color:var(--panel);
+  font-size:10px;
+  text-align:center;
+  line-height:18px;
+  margin-right:6px;
+}
+.tab.active{
+  color:var(--ink);
+  background:var(--panel);
+  border-bottom-color:var(--hazard);
+  font-weight:600;
+}
+.tab.active .step-num{background:var(--hazard);}
+.tab:hover:not(.active){background:#E3E6DA;}
+
+.panel{padding:26px 28px 30px; display:none;}
+.panel.active{display:block;}
+
+.q-block{
+  margin-bottom:20px;
+  padding-bottom:18px;
+  border-bottom:1px dashed var(--line);
+}
+.q-block:last-of-type{border-bottom:none;}
+.q-label{
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:3px;
+  line-height:1.4;
+}
+.q-help{
+  font-size:12px;
+  color:var(--mono-grey);
+  margin-bottom:10px;
+  line-height:1.45;
+}
+.q-help code{
+  font-family:'Space Mono',monospace;
+  background:#E3E6DA;
+  padding:1px 4px;
+  border-radius:2px;
+}
+
+.choices{display:flex; gap:8px; flex-wrap:wrap;}
+.choice{
+  padding:8px 14px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  cursor:pointer;
+  color:var(--ink);
+  transition:all 0.12s;
+}
+.choice:hover{border-color:var(--hazard);}
+.choice.selected{
+  background:var(--ink);
+  color:var(--panel);
+  border-color:var(--ink);
+}
+.choice.selected.pts-high{background:var(--alert); border-color:var(--alert);}
+.choice.selected.pts-mid{background:var(--amber); border-color:var(--amber);}
+.choice.selected.pts-low{background:var(--safe); border-color:var(--safe);}
+
+.checklist{display:flex; flex-direction:column; gap:10px;}
+.check-row{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:9px 12px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  cursor:pointer;
+  transition:border-color 0.12s, background 0.12s;
+}
+.check-row:hover{border-color:var(--hazard);}
+.check-row.checked{background:#E3E6DA; border-color:var(--hazard);}
+.check-row input{margin-top:3px; accent-color:var(--hazard);}
+.check-row .ctext{font-size:13px; line-height:1.45;}
+.check-row .ctext .w{
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  color:var(--mono-grey);
+  margin-left:6px;
+}
+
+.btn-row{margin-top:22px; display:flex; gap:12px; align-items:center;}
+.btn-primary{
+  font-family:'Space Mono',monospace;
+  font-size:12.5px;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  background:var(--ink);
+  color:var(--panel);
+  border:none;
+  padding:12px 22px;
+  cursor:pointer;
+  transition:background 0.15s;
+}
+.btn-primary:hover{background:var(--hazard);}
+.btn-reset{
+  font-family:'Space Mono',monospace;
+  font-size:11.5px;
+  color:var(--mono-grey);
+  background:none;
+  border:1px solid var(--line);
+  padding:11px 16px;
+  cursor:pointer;
+}
+.btn-reset:hover{border-color:var(--alert); color:var(--alert);}
+
+/* Verdict stamp */
+.verdict-wrap{
+  margin-top:26px;
+  padding-top:22px;
+  border-top:2px solid var(--ink);
+  display:none;
+}
+.verdict-wrap.show{display:block; animation:fadein 0.35s ease;}
+@keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+.stamp{
+  display:flex;
+  gap:20px;
+  align-items:center;
+  padding:18px 20px;
+  border:2px solid var(--stamp-color, var(--ink));
+  position:relative;
+  background:var(--panel);
+}
+.stamp::before{
+  content:'ASSESSMENT RESULT';
+  position:absolute;
+  top:-9px; left:16px;
+  background:var(--panel);
+  padding:0 8px;
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  letter-spacing:0.1em;
+  color:var(--stamp-color, var(--ink));
+}
+.stamp-badge{
+  flex-shrink:0;
+  width:78px; height:78px;
+  border:3px solid var(--stamp-color, var(--ink));
+  border-radius:50%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transform:rotate(-6deg);
+  color:var(--stamp-color, var(--ink));
+}
+.stamp-badge .cat-num{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:26px;
+  line-height:1;
+}
+.stamp-badge .cat-label{
+  font-family:'Space Mono',monospace;
+  font-size:8px;
+  letter-spacing:0.05em;
+  margin-top:2px;
+}
+.stamp-body{flex:1;}
+.stamp-body .verdict-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:19px;
+  font-weight:700;
+  color:var(--stamp-color, var(--ink));
+  margin:0 0 4px;
+}
+.stamp-body .verdict-sub{
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  color:var(--mono-grey);
+  margin-bottom:10px;
+}
+.verdict-actions{
+  font-size:13px;
+  line-height:1.6;
+  color:var(--ink);
+}
+.verdict-actions ul{margin:6px 0 0; padding-left:18px;}
+.trace{
+  margin-top:14px;
+  font-family:'Space Mono',monospace;
+  font-size:10.5px;
+  color:var(--mono-grey);
+  border-top:1px dashed var(--line);
+  padding-top:10px;
+  line-height:1.8;
+}
+
+.footer-note{
+  margin-top:18px;
+  font-size:11px;
+  color:var(--mono-grey);
+  line-height:1.5;
+  border-top:1px solid var(--line);
+  padding-top:12px;
+}
+
+@media (max-width:560px){
+  .doc-header{flex-direction:column; align-items:flex-start;}
+  .doc-meta{text-align:left;}
+  .tabs{flex-direction:column;}
+  .tab{border-right:none; border-bottom:1px solid var(--line);}
+  .stamp{flex-direction:column; text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="doc-header">
+    <div class="title-block" style="display:flex; align-items:center; gap:14px;">
+      <div class="hazard-badge" aria-hidden="true">
+        <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#14171A" stroke-width="4" fill="none" stroke-linecap="round">
+            <line x1="10" y1="16" x2="32" y2="32"></line>
+            <line x1="10" y1="48" x2="32" y2="32"></line>
+            <line x1="32" y1="32" x2="58" y2="46"></line>
+            <line x1="59.7" y1="48.5" x2="83.7" y2="32.5"></line>
+            <line x1="56.3" y1="43.5" x2="80.3" y2="27.5"></line>
+          </g>
+          <text x="32" y="38" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="18" fill="#14171A" stroke="#FFFFFF" stroke-width="5" paint-order="stroke fill">N</text>
+          <text x="58" y="52" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="18" fill="#14171A" stroke="#FFFFFF" stroke-width="5" paint-order="stroke fill">N</text>
+          <text x="90" y="26" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="18" fill="#14171A" stroke="#FFFFFF" stroke-width="5" paint-order="stroke fill">O</text>
+        </svg>
+      </div>
+      <div>
+        <h1>NDSRI Risk Screening Tool</h1>
+        <div class="subtitle">Nitrosamine Drug Substance-Related Impurities</div>
+      </div>
+    </div>
+    <div class="doc-meta">
+      REF: <span>NDSRI-SCR-01</span><br>
+      BASIS: <span>ICH M7(R2) / FDA-EMA CPCA</span><br>
+      REV: <span>1.0</span>
+    </div>
+  </div>
+
+  <div class="scope-note">
+    <b>Scope.</b> This tool structures the reasoning used in nitrosamine risk assessment: (1) process/formulation risk per ICH M7(R2) Step&nbsp;1, and (2) a simplified educational approximation of the CPCA (Carcinogenic Potency Categorization Approach) structural logic used by FDA/EMA. It is a screening and training aid built for personal portfolio use — it is <b>not validated software</b> and does not replace expert structural review, read-across, (Q)SAR tools, or regulatory submission-grade assessment (e.g. Lhasa Nexus).
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="process"><span class="step-num">1</span>Process Risk Assessment</div>
+    <div class="tab" data-tab="cpca"><span class="step-num">2</span>CPCA Categorization</div>
+  </div>
+
+  <!-- PANEL 1: PROCESS RISK -->
+  <div class="panel active" id="panel-process">
+    <div class="checklist" id="checklist"><label class="check-row checked" id="row-sec_amine"><input type="checkbox" id="chk-sec_amine"><div class="ctext">Secondary amine present in API, intermediate, or a synthesis reagent<span class="w">+2 pts</span></div></label><label class="check-row checked" id="row-ter_amine"><input type="checkbox" id="chk-ter_amine"><div class="ctext">Tertiary amine present (can fragment to release a secondary amine)<span class="w">+1 pt</span></div></label><label class="check-row checked" id="row-nitrosating"><input type="checkbox" id="chk-nitrosating"><div class="ctext">Nitrosating agent used or present as an impurity in raw materials (e.g. sodium nitrite)<span class="w">+3 pts</span></div></label><label class="check-row checked" id="row-nox"><input type="checkbox" id="chk-nox"><div class="ctext">Nitrogen oxides possible from other reagents or process conditions<span class="w">+2 pts</span></div></label><label class="check-row checked" id="row-acidic"><input type="checkbox" id="chk-acidic"><div class="ctext">Amine and nitrosating source can co-exist under acidic conditions (pH &lt; 7) in a shared step<span class="w">+2 pts</span></div></label><label class="check-row checked" id="row-recycled"><input type="checkbox" id="chk-recycled"><div class="ctext">Recycled solvents or reagents used without dedicated nitrite/nitrosamine control<span class="w">+1 pt</span></div></label><label class="check-row checked" id="row-excipient"><input type="checkbox" id="chk-excipient"><div class="ctext">Excipients with known nitrite impurity potential used in the formulation<span class="w">+1 pt</span></div></label><label class="check-row checked" id="row-class_precedent"><input type="checkbox" id="chk-class_precedent"><div class="ctext">API belongs to a class with prior nitrosamine findings (e.g. sartans, metformin, ranitidine-class, rifamycins)<span class="w">+2 pts</span></div></label><label class="check-row checked" id="row-catalyst"><input type="checkbox" id="chk-catalyst"><div class="ctext">Catalysts/conditions present that can accelerate nitrosation (e.g. formaldehyde, certain metal ions)<span class="w">+1 pt</span></div></label></div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="runProcessAssessment()">Run assessment</button>
+      <button class="btn-reset" onclick="resetProcess()">Reset</button>
+    </div>
+
+    <div class="verdict-wrap show" id="verdict-process">
+      <div class="stamp" id="stamp-process" style="--stamp-color: var(--alert);">
+        <div class="stamp-badge" id="badge-process">
+          <div class="cat-num" id="badge-process-num">H</div>
+          <div class="cat-label">RISK</div>
+        </div>
+        <div class="stamp-body">
+          <div class="verdict-title" id="title-process">High process risk</div>
+          <div class="verdict-sub" id="sub-process">Score 15 / 15 — confirmed or probable root-cause factors present</div>
+          <div class="verdict-actions" id="actions-process"><ul>
+      <li>Confirmatory analytical testing recommended (LC-MS/MS or GC-MS, per ICH M7(R2) Step 2)</li>
+      <li>Build a control strategy per Step 3 if a nitrosamine is detected or predicted above threshold</li>
+      <li>Re-evaluate synthesis route for amine / nitrosating-agent co-exposure points</li>
+    </ul></div>
+        </div>
+      </div>
+      <div class="trace" id="trace-process">FACTORS FLAGGED → Secondary amine present in API, intermediate, or a synthesis reagent  |  Tertiary amine present (can fragment to release a secondary amine)  |  Nitrosating agent used or present as an impurity in raw materials (e.g. sodium nitrite)  |  Nitrogen oxides possible from other reagents or process conditions  |  Amine and nitrosating source can co-exist under acidic conditions (pH &lt; 7) in a shared step  |  Recycled solvents or reagents used without dedicated nitrite/nitrosamine control  |  Excipients with known nitrite impurity potential used in the formulation  |  API belongs to a class with prior nitrosamine findings (e.g. sartans, metformin, ranitidine-class, rifamycins)  |  Catalysts/conditions present that can accelerate nitrosation (e.g. formaldehyde, certain metal ions)</div>
+    </div>
+
+    <div class="footer-note">
+      Risk factors reflect confirmed/probable/possible root-cause categories discussed in ICH M7(R2) Annex&nbsp;2 and FDA's 2023 nitrosamine guidance: secondary/tertiary amines, nitrosating agents, reaction conditions, contamination pathways, and API-class precedent.
+    </div>
+  </div>
+
+  <!-- PANEL 2: CPCA -->
+  <div class="panel" id="panel-cpca">
+    <div id="cpca-questions"><div class="q-block"><div class="q-label">Does the carbon adjacent to the N–NO nitrogen carry an alpha-hydrogen?</div><div class="q-help">Alpha-hydrogen availability is the strongest driver of potency in the CPCA tree — its absence tends to push potency (and risk) up.</div><div class="choices"><div class="choice selected pts-high" data-q="alpha_h" data-v="no" data-pts="3" data-cls="pts-high">No</div><div class="choice" data-q="alpha_h" data-v="unsure" data-pts="1" data-cls="pts-mid">Unsure</div><div class="choice" data-q="alpha_h" data-v="yes" data-pts="0" data-cls="pts-low">Yes</div></div></div><div class="q-block"><div class="q-label">Is the nitrosamine nitrogen part of a cyclic (ring) structure?</div><div class="q-help">Cyclic nitrosamines trend slightly higher in potency than open-chain analogues in the published dataset.</div><div class="choices"><div class="choice selected pts-mid" data-q="cyclic" data-v="yes" data-pts="1" data-cls="pts-mid">Cyclic</div><div class="choice" data-q="cyclic" data-v="no" data-pts="0" data-cls="pts-low">Acyclic</div></div></div><div class="q-block"><div class="q-label">Is there branching or a bulky group directly at the alpha-carbon?</div><div class="q-help">Steric hindrance near the reactive site tends to lower potency.</div><div class="choices"><div class="choice" data-q="branch" data-v="yes" data-pts="-2" data-cls="pts-low">Branched / hindered</div><div class="choice selected pts-mid" data-q="branch" data-v="no" data-pts="0" data-cls="pts-mid">Unhindered</div></div></div><div class="q-block"><div class="q-label">Is an electron-withdrawing group (carbonyl, sulfonyl, aryl) conjugated near the N–NO?</div><div class="q-help">Conjugated electron-withdrawing groups generally act as a deactivating feature.</div><div class="choices"><div class="choice" data-q="ewg" data-v="yes" data-pts="-1" data-cls="pts-low">Present</div><div class="choice selected pts-mid" data-q="ewg" data-v="no" data-pts="0" data-cls="pts-mid">Absent</div></div></div><div class="q-block"><div class="q-label">Is there a beta-heteroatom substitution (e.g. beta-hydroxyl, beta-alkoxy)?</div><div class="q-help">Beta-heteroatom substitution is generally treated as a deactivating structural feature.</div><div class="choices"><div class="choice" data-q="beta_het" data-v="yes" data-pts="-1" data-cls="pts-low">Present</div><div class="choice selected pts-mid" data-q="beta_het" data-v="no" data-pts="0" data-cls="pts-mid">Absent</div></div></div></div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="runCPCA()">Assign category</button>
+      <button class="btn-reset" onclick="resetCPCA()">Reset</button>
+    </div>
+
+    <div class="verdict-wrap show" id="verdict-cpca">
+      <div class="stamp" id="stamp-cpca" style="--stamp-color: var(--cat1);">
+        <div class="stamp-badge" id="badge-cpca">
+          <div class="cat-num" id="badge-cpca-num">1</div>
+          <div class="cat-label">CATEGORY</div>
+        </div>
+        <div class="stamp-body">
+          <div class="verdict-title" id="title-cpca">Category 1 — highest potency alert</div>
+          <div class="verdict-sub" id="sub-cpca">Indicative Acceptable Intake: 18 ng/day  (score 4)</div>
+          <div class="verdict-actions" id="actions-cpca"><ul>
+      <li>Use this indicative AI as a starting point only — confirm with expert structural review or (Q)SAR tooling before use in any risk assessment or filing</li>
+      <li>If the molecule matches a "Cohort of Concern" alert structure independent of this score, treat as Category 1 by default</li>
+      <li>Pair with the Process Risk Assessment (tab 1) to decide whether confirmatory testing is warranted</li>
+    </ul></div>
+        </div>
+      </div>
+      <div class="trace" id="trace-cpca">DECISION TRACE → ALPHA_H=no (+3)  |  CYCLIC=yes (+1)  |  BRANCH=no (+0)  |  EWG=no (+0)  |  BETA_HET=no (+0)</div>
+    </div>
+
+    <div class="footer-note">
+      Structural logic approximates published CPCA trends (Cross, Ponting <i>et al.</i>; FDA 2023 nitrosamine guidance): alpha-hydrogen availability, steric hindrance at the alpha-carbon, electron-withdrawing conjugation, ring context, and beta-heteroatom substitution. Real CPCA assignment requires expert structural evaluation — treat category output here as indicative only.
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ---------------- PROCESS RISK ASSESSMENT ---------------- */
+const processFactors = [
+  {id:'sec_amine', text:'Secondary amine present in API, intermediate, or a synthesis reagent', pts:2},
+  {id:'ter_amine', text:'Tertiary amine present (can fragment to release a secondary amine)', pts:1},
+  {id:'nitrosating', text:'Nitrosating agent used or present as an impurity in raw materials (e.g. sodium nitrite)', pts:3},
+  {id:'nox', text:'Nitrogen oxides possible from other reagents or process conditions', pts:2},
+  {id:'acidic', text:'Amine and nitrosating source can co-exist under acidic conditions (pH < 7) in a shared step', pts:2},
+  {id:'recycled', text:'Recycled solvents or reagents used without dedicated nitrite/nitrosamine control', pts:1},
+  {id:'excipient', text:'Excipients with known nitrite impurity potential used in the formulation', pts:1},
+  {id:'class_precedent', text:'API belongs to a class with prior nitrosamine findings (e.g. sartans, metformin, ranitidine-class, rifamycins)', pts:2},
+  {id:'catalyst', text:'Catalysts/conditions present that can accelerate nitrosation (e.g. formaldehyde, certain metal ions)', pts:1},
+];
+
+const checklistEl = document.getElementById('checklist');
+processFactors.forEach(f=>{
+  const row = document.createElement('label');
+  row.className='check-row';
+  row.id='row-'+f.id;
+  row.innerHTML = `<input type="checkbox" id="chk-${f.id}"><div class="ctext">${f.text}<span class="w">+${f.pts} pt${f.pts>1?'s':''}</span></div>`;
+  row.addEventListener('click', (e)=>{
+    if(e.target.tagName!=='INPUT'){
+      const cb = row.querySelector('input');
+      cb.checked = !cb.checked;
+    }
+    row.classList.toggle('checked', row.querySelector('input').checked);
+  });
+  checklistEl.appendChild(row);
+});
+
+function resetProcess(){
+  processFactors.forEach(f=>{
+    document.getElementById('chk-'+f.id).checked=false;
+    document.getElementById('row-'+f.id).classList.remove('checked');
+  });
+  document.getElementById('verdict-process').classList.remove('show');
+}
+
+function runProcessAssessment(){
+  let score=0; let hit=[];
+  processFactors.forEach(f=>{
+    if(document.getElementById('chk-'+f.id).checked){ score+=f.pts; hit.push(f.text); }
+  });
+
+  let cat, color, title, sub, actions;
+  if(score>=7){
+    cat='H'; color='var(--alert)';
+    title='High process risk';
+    sub='Score '+score+' / 15 — confirmed or probable root-cause factors present';
+    actions=`<ul>
+      <li>Confirmatory analytical testing recommended (LC-MS/MS or GC-MS, per ICH M7(R2) Step 2)</li>
+      <li>Build a control strategy per Step 3 if a nitrosamine is detected or predicted above threshold</li>
+      <li>Re-evaluate synthesis route for amine / nitrosating-agent co-exposure points</li>
+    </ul>`;
+  } else if(score>=3){
+    cat='M'; color='var(--amber)';
+    title='Medium process risk';
+    sub='Score '+score+' / 15 — possible root-cause factors identified';
+    actions=`<ul>
+      <li>Document a formal risk assessment per ICH M7(R2) Step 1</li>
+      <li>Consider confirmatory testing if factors cluster around a single process step</li>
+      <li>Monitor raw-material and excipient nitrite specifications</li>
+    </ul>`;
+  } else {
+    cat='L'; color='var(--safe)';
+    title='Low process risk';
+    sub='Score '+score+' / 15 — no significant root-cause factors flagged';
+    actions=`<ul>
+      <li>Standard risk review is typically sufficient; document the rationale</li>
+      <li>Re-screen if the synthesis route, reagents, or excipient sourcing change</li>
+    </ul>`;
+  }
+
+  document.getElementById('badge-process-num').textContent=cat;
+  document.getElementById('stamp-process').style.setProperty('--stamp-color', color);
+  document.getElementById('title-process').textContent=title;
+  document.getElementById('sub-process').textContent=sub;
+  document.getElementById('actions-process').innerHTML=actions;
+  document.getElementById('trace-process').innerHTML = hit.length
+    ? 'FACTORS FLAGGED → '+hit.join('  |  ')
+    : 'FACTORS FLAGGED → none selected';
+  document.getElementById('verdict-process').classList.add('show');
+}
+
+/* ---------------- CPCA CATEGORIZATION ---------------- */
+const cpcaQuestions = [
+  {
+    id:'alpha_h',
+    label:'Does the carbon adjacent to the N–NO nitrogen carry an alpha-hydrogen?',
+    help:'Alpha-hydrogen availability is the strongest driver of potency in the CPCA tree — its absence tends to push potency (and risk) up.',
+    choices:[
+      {v:'no', t:'No', pts:3, cls:'pts-high'},
+      {v:'unsure', t:'Unsure', pts:1, cls:'pts-mid'},
+      {v:'yes', t:'Yes', pts:0, cls:'pts-low'},
+    ]
+  },
+  {
+    id:'cyclic',
+    label:'Is the nitrosamine nitrogen part of a cyclic (ring) structure?',
+    help:'Cyclic nitrosamines trend slightly higher in potency than open-chain analogues in the published dataset.',
+    choices:[
+      {v:'yes', t:'Cyclic', pts:1, cls:'pts-mid'},
+      {v:'no', t:'Acyclic', pts:0, cls:'pts-low'},
+    ]
+  },
+  {
+    id:'branch',
+    label:'Is there branching or a bulky group directly at the alpha-carbon?',
+    help:'Steric hindrance near the reactive site tends to lower potency.',
+    choices:[
+      {v:'yes', t:'Branched / hindered', pts:-2, cls:'pts-low'},
+      {v:'no', t:'Unhindered', pts:0, cls:'pts-mid'},
+    ]
+  },
+  {
+    id:'ewg',
+    label:'Is an electron-withdrawing group (carbonyl, sulfonyl, aryl) conjugated near the N–NO?',
+    help:'Conjugated electron-withdrawing groups generally act as a deactivating feature.',
+    choices:[
+      {v:'yes', t:'Present', pts:-1, cls:'pts-low'},
+      {v:'no', t:'Absent', pts:0, cls:'pts-mid'},
+    ]
+  },
+  {
+    id:'beta_het',
+    label:'Is there a beta-heteroatom substitution (e.g. beta-hydroxyl, beta-alkoxy)?',
+    help:'Beta-heteroatom substitution is generally treated as a deactivating structural feature.',
+    choices:[
+      {v:'yes', t:'Present', pts:-1, cls:'pts-low'},
+      {v:'no', t:'Absent', pts:0, cls:'pts-mid'},
+    ]
+  },
+];
+
+const cpcaState = {};
+const cpcaEl = document.getElementById('cpca-questions');
+cpcaQuestions.forEach(q=>{
+  const block = document.createElement('div');
+  block.className='q-block';
+  const choicesHtml = q.choices.map(c=>
+    `<div class="choice" data-q="${q.id}" data-v="${c.v}" data-pts="${c.pts}" data-cls="${c.cls}">${c.t}</div>`
+  ).join('');
+  block.innerHTML = `<div class="q-label">${q.label}</div><div class="q-help">${q.help}</div><div class="choices">${choicesHtml}</div>`;
+  cpcaEl.appendChild(block);
+});
+
+cpcaEl.addEventListener('click', (e)=>{
+  const el = e.target.closest('.choice');
+  if(!el) return;
+  const q = el.dataset.q;
+  document.querySelectorAll(`.choice[data-q="${q}"]`).forEach(c=>c.classList.remove('selected','pts-high','pts-mid','pts-low'));
+  el.classList.add('selected', el.dataset.cls);
+  cpcaState[q] = {v:el.dataset.v, pts:parseFloat(el.dataset.pts)};
+});
+
+function resetCPCA(){
+  document.querySelectorAll('#cpca-questions .choice').forEach(c=>c.classList.remove('selected','pts-high','pts-mid','pts-low'));
+  Object.keys(cpcaState).forEach(k=>delete cpcaState[k]);
+  document.getElementById('verdict-cpca').classList.remove('show');
+}
+
+function runCPCA(){
+  const missing = cpcaQuestions.filter(q=>!(q.id in cpcaState));
+  if(missing.length){
+    alert('Please answer all questions before assigning a category.\nMissing: '+missing.map(m=>m.label).join(' / '));
+    return;
+  }
+  let score=0; let trace=[];
+  cpcaQuestions.forEach(q=>{
+    const s = cpcaState[q.id];
+    score += s.pts;
+    trace.push(q.id.toUpperCase()+'='+s.v+' ('+(s.pts>=0?'+':'')+s.pts+')');
+  });
+
+  let cat, ai, color, title;
+  if(score>=3){ cat=1; ai='18 ng/day'; color='var(--cat1)'; title='Category 1 — highest potency alert'; }
+  else if(score===2){ cat=2; ai='26.5 ng/day'; color='var(--cat2)'; title='Category 2 — high potency alert'; }
+  else if(score===1){ cat=3; ai='100 ng/day'; color='var(--cat3)'; title='Category 3 — moderate potency alert'; }
+  else if(score===0){ cat=4; ai='400 ng/day'; color='var(--cat4)'; title='Category 4 — lower potency alert'; }
+  else { cat=5; ai='1500 ng/day'; color='var(--cat5)'; title='Category 5 — default / insufficient concern'; }
+
+  document.getElementById('badge-cpca-num').textContent=cat;
+  document.getElementById('stamp-cpca').style.setProperty('--stamp-color', color);
+  document.getElementById('title-cpca').textContent=title;
+  document.getElementById('sub-cpca').textContent='Indicative Acceptable Intake: '+ai+'  (score '+score+')';
+  document.getElementById('actions-cpca').innerHTML = `<ul>
+      <li>Use this indicative AI as a starting point only — confirm with expert structural review or (Q)SAR tooling before use in any risk assessment or filing</li>
+      <li>If the molecule matches a "Cohort of Concern" alert structure independent of this score, treat as Category 1 by default</li>
+      <li>Pair with the Process Risk Assessment (tab 1) to decide whether confirmatory testing is warranted</li>
+    </ul>`;
+  document.getElementById('trace-cpca').innerHTML = 'DECISION TRACE → '+trace.join('  |  ');
+  document.getElementById('verdict-cpca').classList.add('show');
+}
+
+/* ---------------- TABS ---------------- */
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+  });
+});
+</script>
+
+
+
+</body></html>
