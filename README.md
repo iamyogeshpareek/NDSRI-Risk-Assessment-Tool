@@ -22,13 +22,13 @@ A simplified, educational implementation of the **FDA/EMA Carcinogenic Potency C
 - conjugated electron-withdrawing groups
 - beta-heteroatom substitution
 
-- and returns an indicative **potency category (1–5)** with the corresponding **Acceptable Intake limit (18–1,500 ng/day)**.
+- and returns an indicative **potency category (1-5)** with the corresponding **Acceptable Intake limit (18-1,500 ng/day)**.
 
 ---
 
 ## Why this exists
 
-CPCA-based assessment is currently available through enterprise tools such as Lhasa's **Derek Nexus**, and FDA has also released an open-source reference implementation (**Featurize-Nitrosamines**, Kruhlak *et al.*, 2024). This project doesn't propose new science — it's a from-scratch implementation of the published CPCA logic, built to make the reasoning process transparent and accessible for students, small labs, and QA/regulatory teams without access to licensed software.
+CPCA-based assessment is currently available through enterprise tools such as Lhasa's **Derek Nexus**, and FDA has also released an open-source reference implementation (**Featurize-Nitrosamines**, Kruhlak *et al.*, 2024). This project doesn't propose new science - it's a from-scratch implementation of the published CPCA logic, built to make the reasoning process transparent and accessible for students, small labs, and QA/regulatory teams without access to licensed software.
 
 Built as a portfolio project by an M.Pharm (Pharmaceutical Analysis) graduate (currently pursuing PhD) working on AQbD-based analytical method development and a review article on NDSRIs covering FDA, EMA, and ICH M7(R2) frameworks.
 
@@ -48,7 +48,7 @@ This tool is a **screening and training aid only**. It is not validated software
 
 ## References
 
-- ICH M7(R2) — *Assessment and Control of DNA Reactive (Mutagenic) Impurities in Pharmaceuticals to Limit Potential Carcinogenic Risk*
-- FDA (2023) — *Control of Nitrosamine Impurities in Human Drugs*, guidance for industry
+- ICH M7(R2) - *Assessment and Control of DNA Reactive (Mutagenic) Impurities in Pharmaceuticals to Limit Potential Carcinogenic Risk*
+- FDA (2023) - *Control of Nitrosamine Impurities in Human Drugs*, guidance for industry
 - Cross, K.P., Ponting, D.J. *et al.* — development of the Carcinogenic Potency Categorization Approach (CPCA)
 - Kruhlak, N.L. *et al.* (2024) — *Limits for N-Nitrosamine Impurities in Pharmaceuticals: Development and Application of the CPCA*, Regulatory Toxicology and Pharmacology
