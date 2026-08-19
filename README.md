@@ -11,7 +11,7 @@ An interactive, browser-based decision-support tool for **nitrosamine drug subst
 ## What it does
 
 ### 1. Process Risk Assessment
-A weighted checklist based on **ICH M7(R2) Annex 2** root-cause factors — secondary/tertiary amines, nitrosating agents, reaction pH, recycled solvents, excipient nitrite potential, and API-class precedent (sartans, metformin, ranitidine-class, rifamycins). Produces a **Low / Medium / High** process-risk verdict with recommended next steps: standard risk review vs. confirmatory LC-MS/MS or GC-MS testing.
+A weighted checklist based on **ICH M7(R2) Annex 2** root-cause factors - secondary/tertiary amines, nitrosating agents, reaction pH, recycled solvents, excipient nitrite potential, and API-class precedent (sartans, metformin, ranitidine-class, rifamycins). Produces a **Low / Medium / High** process-risk verdict with recommended next steps: standard risk review vs. confirmatory LC-MS/MS or GC-MS testing.
 
 ### 2. CPCA Structural Categorization
 A simplified, educational implementation of the **FDA/EMA Carcinogenic Potency Categorization Approach (CPCA)** (Cross, Ponting *et al.*; FDA 2023 nitrosamine guidance). Walks through the core structural descriptors -
@@ -22,7 +22,7 @@ A simplified, educational implementation of the **FDA/EMA Carcinogenic Potency C
 - conjugated electron-withdrawing groups
 - beta-heteroatom substitution
 
-— and returns an indicative **potency category (1–5)** with the corresponding **Acceptable Intake limit (18–1,500 ng/day)**.
+- and returns an indicative **potency category (1–5)** with the corresponding **Acceptable Intake limit (18–1,500 ng/day)**.
 
 ---
 
