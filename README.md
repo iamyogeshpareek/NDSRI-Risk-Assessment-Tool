@@ -1,6 +1,6 @@
 # NDSRI Risk Screening Tool
 
-An interactive, browser-based decision-support tool for **nitrosamine drug substance-related impurity (NDSRI) risk assessment** — built around two current regulatory frameworks used across the pharmaceutical industry.
+An interactive, browser-based decision-support tool for **nitrosamine drug substance-related impurity (NDSRI) risk assessment** - built around two current regulatory frameworks used across the pharmaceutical industry.
 
 ![status](https://img.shields.io/badge/status-portfolio_project-orange)
 ![stack](https://img.shields.io/badge/stack-HTML%2FCSS%2FJS-black)
